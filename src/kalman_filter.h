@@ -9,7 +9,7 @@ private:
    * @param z The measurement at k+1
    * @param z_pred, with prediction to y = z - z_pred
    */
-  void GenericUpdate(const Eigen::VectorXd &z, const Eigen::VectorXd &z_pred);
+  void GenericUpdate(const Eigen::VectorXd &z, const Eigen::VectorXd &y);
 
 public:
 
