@@ -1,5 +1,6 @@
 #include "kalman_filter.h"
 #include <math.h>
+#include <iostream>
 
 
 using Eigen::MatrixXd;
@@ -50,19 +51,20 @@ void KalmanFilter::Update(const VectorXd &z) {
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
   //TODO: update the state by using Extended Kalman Filter equations
-  float h1, h2, h3;
+  float h1, h2, h3, rest;
   h1 = sqrt(pow(x_(0),2) + pow(x_(1),2));
   h2 = atan2(x_(1) , x_(0));
 
-  if(h1 != 0)
+  //if h1 has a small value, use 0 instead
+  if(h1 >= 0.01)
     h3 = ((x_(0)*x_(2)) + (x_(1)*x_(3))) / h1;
   else
     h3 = 0;
 
   //update H jacobian
-  VectorXd Hj(3);
-  Hj << h1, h2, h3;
+  VectorXd z_pred(3);
+  z_pred << h1, h2, h3;
 
-  //update values
-  this->GenericUpdate(z, Hj);
+  //update values >> does (VectorXd y = z - z_pred) and other operations
+  this->GenericUpdate(z, z_pred);
 }
